@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Loan Status Inquiry</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Loan Status Checker</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>Loan Status Inquiry Portal</header>
   <div class="container">
-    <div class="input-section">
-      <input type="text" id="nicInput" placeholder="Enter your NIC number" />
-      <button onclick="checkStatus()">Check Status</button>
-    </div>
-    <div id="greeting" class="greeting"></div>
-    <div id="result" class="stage"></div>
+    <h1>Loan Status Inquiry</h1>
+    <p>Enter your NIC number to check your loan processing status</p>
+    <input type="text" id="nicInput" placeholder="Enter NIC Number"/>
+    <button onclick="checkStatus()">Check Status</button>
+    <div id="result"></div>
   </div>
-  <footer>BOC Monaragala Branch</footer>
+
+  <footer>
+    BOC Monaragala Branch
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>

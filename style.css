@@ -1,86 +1,62 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #fffacd; /* light yellow background */
+  font-family: Arial, sans-serif;
+  background-color: #fff9cc;
   margin: 0;
   padding: 0;
-  color: #333;
-}
-
-header {
-  background-color: #0a3d62;
-  padding: 1rem;
-  text-align: center;
-  color: white;
-  font-size: 1.8rem;
 }
 
 .container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fffaf0; /* slightly off-white for readability */
+  max-width: 600px;
+  margin: 50px auto;
+  background: #fffef0;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px #ccc;
+  text-align: center;
 }
 
-.input-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
+h1 {
+  color: #333300;
 }
 
-input[type="text"] {
-  flex: 1;
-  min-width: 200px;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
+input {
+  width: 80%;
+  padding: 10px;
+  margin-top: 15px;
+  border: 1px solid #999900;
   border-radius: 5px;
 }
 
 button {
-  padding: 0.6rem 1rem;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #ffcc00;
   border: none;
-  background-color: #0a3d62;
-  color: white;
-  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 button:hover {
-  background-color: #145285;
+  background-color: #e6b800;
 }
 
-.stage {
-  margin-top: 1.5rem;
-}
-
-.stage-item {
-  padding: 1rem;
-  border-left: 6px solid #ccc;
-  margin: 1rem 0;
-  background-color: #fdfdfd;
-  border-radius: 5px;
-}
-
-.highlight {
-  border-left-color: #28a745;
-  background-color: #e6f9eb;
-  font-weight: bold;
-  color: #1c7430;
+#result {
+  margin-top: 30px;
+  text-align: left;
+  background-color: #fff8dc;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0c000;
 }
 
 footer {
-  margin-top: 3rem;
   text-align: center;
-  padding: 1rem;
-  background-color: #0a3d62;
-  color: white;
-}
-
-.greeting {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  color: #333;
+  padding: 15px;
+  background-color: #333300;
+  color: #fff;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
