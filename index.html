@@ -9,10 +9,13 @@
 <body>
   <header>Loan Status Inquiry Portal</header>
   <div class="container">
-    <div>
+    <div class="input-section">
       <input type="text" id="nicInput" placeholder="Enter your NIC number" />
       <button onclick="checkStatus()">Check Status</button>
+      <button onclick="window.print()">??? Print</button>
+      <button onclick="generatePDF()">?? Download PDF</button>
     </div>
+    <div id="greeting" class="greeting"></div>
     <div id="result" class="stage"></div>
   </div>
   <footer>BOC Monaragala Branch</footer>

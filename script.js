@@ -2,32 +2,32 @@ const stages = [
   {
     title: "Application Submission",
     description:
-      "You have successfully submitted your application including your personal information, financial statements, credit history, and details about the loan purpose. We are reviewing this information to assess your eligibility.",
+      "You have successfully submitted your application including personal and financial details. We're reviewing them to assess your eligibility.",
   },
   {
     title: "Documentation Verification",
     description:
-      "We are verifying your documents such as income statements, bank statements, and IDs to ensure authenticity and accuracy.",
+      "We're verifying your documents such as income and bank statements to ensure authenticity and accuracy.",
   },
   {
     title: "Credit Evaluation",
     description:
-      "We are analyzing your credit score, payment history, outstanding debts, and existing loans to determine risk.",
+      "We're analyzing your credit score, repayment history, and debts to assess your creditworthiness.",
   },
   {
     title: "Loan Underwriting",
     description:
-      "We are thoroughly assessing your financial profile, collateral, and repayment capacity before final decision.",
+      "We're finalizing assessment of your financial profile and collateral to make a final decision.",
   },
   {
     title: "Loan Approval and Disbursement",
     description:
-      "Your loan has been approved. Funds are being disbursed as per agreed terms, either as a lump sum or in installments.",
+      "Your loan has been approved! Funds are being disbursed as agreed in lump sum or installments.",
   },
   {
     title: "Loan Servicing",
     description:
-      "Loan has been granted and is now in servicing. We're monitoring repayments and offering ongoing support.",
+      "Your loan is now active. We're supporting you through repayments and regular service.",
   },
 ];
 
@@ -72,17 +72,22 @@ function checkStatus() {
   const nic = document.getElementById("nicInput").value.trim();
   const stageIndex = customerData[nic];
   const resultDiv = document.getElementById("result");
+  const greetDiv = document.getElementById("greeting");
   resultDiv.innerHTML = "";
+  greetDiv.innerHTML = "";
 
   if (stageIndex === undefined) {
-    resultDiv.innerHTML =
+    greetDiv.innerHTML =
       "<p style='color: red;'>NIC not found in our records. Please check and try again.</p>";
     return;
   }
 
+  // Greeting message
+  greetDiv.innerHTML = `<p>Hello ??, your NIC: <strong>${nic}</strong></p>`;
+
   if (stageIndex === null) {
     resultDiv.innerHTML =
-      "<p style='color: orange;'>Your loan application is pending. Please wait while we process your details.</p>";
+      "<p style='color: orange;'>?? Your loan application is pending. Please wait while we process your details.</p>";
     return;
   }
 
@@ -92,7 +97,16 @@ function checkStatus() {
     if (index === stageIndex) {
       div.classList.add("highlight");
     }
-    div.innerHTML = `<strong>Stage ${index + 1}: ${stage.title}</strong><br><p>${stage.description}</p>`;
+    div.innerHTML = `<strong>Stage ${index + 1}: ${
+      index === stageIndex
+        ? `<span style="color:green">${stage.title}</span>`
+        : stage.title
+    }</strong><br><p>${stage.description}</p>`;
     resultDiv.appendChild(div);
   });
+}
+
+// Optional: Download PDF (basic HTML to PDF using print)
+function generatePDF() {
+  window.print(); // Alternatively, use html2pdf.js or jsPDF for advanced output
 }

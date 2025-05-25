@@ -1,6 +1,6 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f4f8;
+  background: #fffacd; /* light yellow background */
   margin: 0;
   padding: 0;
   color: #333;
@@ -15,7 +15,7 @@ header {
 }
 
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
   background: white;
@@ -23,12 +23,19 @@ header {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+.input-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 input[type="text"] {
-  width: 70%;
+  flex: 1;
+  min-width: 200px;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-right: 1rem;
 }
 
 button {
@@ -40,8 +47,12 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #145285;
+}
+
 .stage {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .stage-item {
@@ -53,8 +64,10 @@ button {
 }
 
 .highlight {
-  border-left-color: #0a3d62;
-  background-color: #e3f2fd;
+  border-left-color: #28a745;
+  background-color: #e6f9eb;
+  font-weight: bold;
+  color: #1c7430;
 }
 
 footer {
@@ -63,4 +76,11 @@ footer {
   padding: 1rem;
   background-color: #0a3d62;
   color: white;
+}
+
+.greeting {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  color: #333;
 }
