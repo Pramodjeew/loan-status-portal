@@ -2,111 +2,86 @@ const stages = [
   {
     title: "Application Submission",
     description:
-      "You have successfully submitted your application including personal and financial details. We're reviewing them to assess your eligibility.",
+      "Customer has submitted the loan application including personal and financial details. We are currently reviewing it.",
   },
   {
     title: "Documentation Verification",
     description:
-      "We're verifying your documents such as income and bank statements to ensure authenticity and accuracy.",
+      "Submitted documents such as income proof and ID are being verified for accuracy and authenticity.",
   },
   {
     title: "Credit Evaluation",
     description:
-      "We're analyzing your credit score, repayment history, and debts to assess your creditworthiness.",
+      "Credit history and repayment capability are being evaluated to determine creditworthiness.",
   },
   {
     title: "Loan Underwriting",
     description:
-      "We're finalizing assessment of your financial profile and collateral to make a final decision.",
+      "A complete financial review is being finalized to approve or reject the loan application.",
   },
   {
     title: "Loan Approval and Disbursement",
     description:
-      "Your loan has been approved! Funds are being disbursed as agreed in lump sum or installments.",
+      "Loan has been approved and the disbursement process has been initiated as agreed.",
   },
   {
     title: "Loan Servicing",
     description:
-      "Your loan is now active. We're supporting you through repayments and regular service.",
+      "Loan is now active and customer is in the repayment phase. Contact us for support if needed.",
   },
 ];
 
+// NIC ? customer name, loan type, current stage (0-based index)
 const customerData = {
-  "905521888V": 1,
-  "876872013v": 2,
-  "986032991V": 1,
-  "198070003593": 2,
-  "821681154V": 1,
-  "72661847V": 2,
-  "905860283V": 3,
-  "852392185V": 4,
-  "907150151V": 2,
-  "726661847V": 4,
-  "198968400622": 4,
-  "926421875V": null,
-  "853292494V": 2,
-  "878300319V": 2,
-  "752342199V": 4,
-  "856428561V": 2,
-  "977741971V": 4,
-  "197977102213": 1,
-  "196923701917": 2,
-  "997280458V": 2,
-  "972111821V": 2,
-  "89287236": 4,
-  "196821102484": 1,
-  "740550039V": 2,
-  "675881022V": 4,
-  "766350968V": 1,
-  "867463500V": 2,
-  "950790709V": 2,
-  "757734524V": 4,
-  "199002104294": 2,
-  "961441242V": 2,
-  "198525305075": 1,
-  "198675402868": 2,
-  "880065025V": 4,
+  "905521888V": { name: "Nimal Perera", loanType: "Personal Loan", stage: 1 },
+  "876872013V": { name: "Suneth Madushanka", loanType: "Home Loan", stage: 2 },
+  "986032991V": { name: "Tharushi Silva", loanType: "Education Loan", stage: 1 },
+  "198070003593": { name: "Kasun Jayalath", loanType: "Vehicle Loan", stage: 2 },
+  "821681154V": { name: "Saman Kumara", loanType: "Business Loan", stage: 1 },
+  "72661847V": { name: "Nirosha Jayasinghe", loanType: "Home Loan", stage: 2 },
+  "905860283V": { name: "Ruwan Wickramasinghe", loanType: "Agri Loan", stage: 3 },
+  "852392185V": { name: "Dilani Herath", loanType: "SME Loan", stage: 4 },
+  "907150151V": { name: "Chathura Rathnayake", loanType: "Personal Loan", stage: 2 },
+  "198968400622": { name: "Nadeeka Fernando", loanType: "Education Loan", stage: 4 },
 };
 
 function checkStatus() {
   const nic = document.getElementById("nicInput").value.trim();
-  const stageIndex = customerData[nic];
+  const customer = customerData[nic];
   const resultDiv = document.getElementById("result");
   const greetDiv = document.getElementById("greeting");
   resultDiv.innerHTML = "";
   greetDiv.innerHTML = "";
 
-  if (stageIndex === undefined) {
+  if (!customer) {
     greetDiv.innerHTML =
       "<p style='color: red;'>NIC not found in our records. Please check and try again.</p>";
     return;
   }
 
-  // Greeting message
-  greetDiv.innerHTML = `<p>Hello ??, your NIC: <strong>${nic}</strong></p>`;
+  const { name, loanType, stage } = customer;
+  const totalStages = stages.length;
+  const remainingStages = totalStages - (stage + 1);
 
-  if (stageIndex === null) {
-    resultDiv.innerHTML =
-      "<p style='color: orange;'>?? Your loan application is pending. Please wait while we process your details.</p>";
-    return;
-  }
+  // Greeting and details
+  greetDiv.innerHTML = `
+    <p>Hello ?? <strong>${name}</strong>!</p>
+    <p>Your NIC: <strong>${nic}</strong></p>
+    <p>You have applied for a <strong>${loanType}</strong>.</p>
+    <p>Currently, you are at <strong style="color: green;">Stage ${stage + 1}: ${stages[stage].title}</strong>.</p>
+    <p>You have <strong>${remainingStages}</strong> stage(s) remaining until final disbursement.</p>
+  `;
 
-  stages.forEach((stage, index) => {
+  // All stages with highlight
+  stages.forEach((st, index) => {
     const div = document.createElement("div");
     div.classList.add("stage-item");
-    if (index === stageIndex) {
-      div.classList.add("highlight");
-    }
+    if (index === stage) div.classList.add("highlight");
+
     div.innerHTML = `<strong>Stage ${index + 1}: ${
-      index === stageIndex
-        ? `<span style="color:green">${stage.title}</span>`
-        : stage.title
-    }</strong><br><p>${stage.description}</p>`;
+      index === stage ? `<span style="color:green">${st.title}</span>` : st.title
+    }</strong><br><p>${st.description}</p>`;
+
     resultDiv.appendChild(div);
   });
-}
-
-// Optional: Download PDF (basic HTML to PDF using print)
-function generatePDF() {
-  window.print(); // Alternatively, use html2pdf.js or jsPDF for advanced output
 }
