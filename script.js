@@ -1,76 +1,98 @@
-const customerData = [
-    { nic: "905521888V", name: "W.M. Isuru Shashi", status: "Documentation Verification" },
-    { nic: "876872013v", name: "w.m dinusha pushpa", status: "Credit Evaluation" },
-    { nic: "986032991V", name: "H.A.Y.H.hettiarachchi", status: "Documentation Verification" },
-    { nic: "198070003593", name: "T.A.chamila nishanthi", status: "Credit Evaluation" },
-    { nic: "821681154V", name: "w.M.Aminda jayalath", status: "Documentation Verification" },
-    { nic: "72661847V", name: "W.M.R.Vijesinhe", status: "Credit Evaluation" },
-    { nic: "905860283V", name: "W.V.T.R.Viyelath", status: "Loan Underwriting" },
-    { nic: "852392185V", name: "K.M.R.Gunasekara", status: "Loan Approval and Disbursement" },
-    { nic: "907150151V", name: "A.G.Kamalavathi kumarihami", status: "Credit Evaluation" },
-    { nic: "726661847V", name: "W.M.R.Wiyesinhe", status: "Loan Approval and Disbursement" },
-    { nic: "198968400622", name: "R.M.Sunethra sanjivani", status: "Pending for Approval" },
-
-    { nic: "926421875V", name: "Nilmini dissanayaka", status: "" },
-    { nic: "853292494V", name: "N.R.M.S.K.Rathnayaka", status: "Credit Evaluation" },
-    { nic: "878300319V", name: "J.M.A.I.Jayasinhe", status: "Credit Evaluation" },
-    { nic: "752342199V", name: "D.M.G.Kumarasiri", status: "Loan Approval and Disbursement" },
-    { nic: "856428561V", name: "kondaya", status: "Credit Evaluation" },
-    { nic: "977741971V", name: "R.G.C.S.Karunarathna", status: "Pending for Approval" },
-    { nic: "197977102213", name: "R.G.Shiromi mala", status: "Documentation Verification" },
-    { nic: "196923701917", name: "H.G.N.S.K.Gamage", status: "Credit Evaluation" },
-    { nic: "997280458V", name: "K.A.Purnima sewwandi", status: "Credit Evaluation" },
-    { nic: "972111821V", name: "J.Agilan prasanna", status: "Credit Evaluation" },
-    { nic: "89287236", name: "A.M.Chamith eranga", status: "Loan Approval and Disbursement" },
-    { nic: "196821102484", name: "S.R.Rajamuni", status: "Documentation Verification" },
-    { nic: "740550039V", name: "N.M.Athula senerath", status: "Credit Evaluation" },
-    { nic: "675881022V", name: "D.M.C.Dissanayake", status: "Loan Approval and Disbursement" },
-    { nic: "766350968V", name: "T.G.R.M.Priyanka", status: "Documentation Verification" },
-    { nic: "867463500V", name: "R.M.Nishanthi hemamali", status: "Credit Evaluation" },
-    { nic: "950790709V", name: "A.H.M.Isuru udaraka", status: "Credit Evaluation" },
-    { nic: "757734524V", name: "K.G.Suwaneetha kumari", status: "Loan Approval and Disbursement" },
-    { nic: "199002104294", name: "K.W.Sahan tharidu", status: "Credit Evaluation" },
-    { nic: "961441242V", name: "E.G.C.Jayamal", status: "Credit Evaluation" },
-    { nic: "198525305075", name: "w.priyankara dinesh", status: "Documentation Verification" },
-    { nic: "198675402868", name: "E.D.Damayanthi", status: "Credit Evaluation" },
-    { nic: "880065025V", name: "M.R.N.M.Bandare", status: "Loan Approval and Disbursement" }
+const stages = [
+  {
+    title: "Application Submission",
+    description:
+      "You have successfully submitted your application including your personal information, financial statements, credit history, and details about the loan purpose. We are reviewing this information to assess your eligibility.",
+  },
+  {
+    title: "Documentation Verification",
+    description:
+      "We are verifying your documents such as income statements, bank statements, and IDs to ensure authenticity and accuracy.",
+  },
+  {
+    title: "Credit Evaluation",
+    description:
+      "We are analyzing your credit score, payment history, outstanding debts, and existing loans to determine risk.",
+  },
+  {
+    title: "Loan Underwriting",
+    description:
+      "We are thoroughly assessing your financial profile, collateral, and repayment capacity before final decision.",
+  },
+  {
+    title: "Loan Approval and Disbursement",
+    description:
+      "Your loan has been approved. Funds are being disbursed as per agreed terms, either as a lump sum or in installments.",
+  },
+  {
+    title: "Loan Servicing",
+    description:
+      "Loan has been granted and is now in servicing. We're monitoring repayments and offering ongoing support.",
+  },
 ];
 
-document.getElementById('searchBtn').addEventListener('click', () => {
-    const nic = document.getElementById('nicInput').value.trim();
-    const resultDiv = document.getElementById('result');
-    const stagesList = document.querySelectorAll('#stagesList li');
+const customerData = {
+  "905521888V": 1,
+  "876872013v": 2,
+  "986032991V": 1,
+  "198070003593": 2,
+  "821681154V": 1,
+  "72661847V": 2,
+  "905860283V": 3,
+  "852392185V": 4,
+  "907150151V": 2,
+  "726661847V": 4,
+  "198968400622": 4,
+  "926421875V": null,
+  "853292494V": 2,
+  "878300319V": 2,
+  "752342199V": 4,
+  "856428561V": 2,
+  "977741971V": 4,
+  "197977102213": 1,
+  "196923701917": 2,
+  "997280458V": 2,
+  "972111821V": 2,
+  "89287236": 4,
+  "196821102484": 1,
+  "740550039V": 2,
+  "675881022V": 4,
+  "766350968V": 1,
+  "867463500V": 2,
+  "950790709V": 2,
+  "757734524V": 4,
+  "199002104294": 2,
+  "961441242V": 2,
+  "198525305075": 1,
+  "198675402868": 2,
+  "880065025V": 4,
+};
 
-    // Clear previous highlights
-    stagesList.forEach(li => li.classList.remove('highlight'));
+function checkStatus() {
+  const nic = document.getElementById("nicInput").value.trim();
+  const stageIndex = customerData[nic];
+  const resultDiv = document.getElementById("result");
+  resultDiv.innerHTML = "";
 
-    if (!nic) {
-        resultDiv.textContent = "Please enter your NIC number.";
-        return;
+  if (stageIndex === undefined) {
+    resultDiv.innerHTML =
+      "<p style='color: red;'>NIC not found in our records. Please check and try again.</p>";
+    return;
+  }
+
+  if (stageIndex === null) {
+    resultDiv.innerHTML =
+      "<p style='color: orange;'>Your loan application is pending. Please wait while we process your details.</p>";
+    return;
+  }
+
+  stages.forEach((stage, index) => {
+    const div = document.createElement("div");
+    div.classList.add("stage-item");
+    if (index === stageIndex) {
+      div.classList.add("highlight");
     }
-
-    // Search customer by NIC (case insensitive)
-    const customer = customerData.find(c => c.nic.toLowerCase() === nic.toLowerCase());
-
-    if (!customer) {
-        resultDiv.textContent = "NIC number not found. Please check and try again.";
-        return;
-    }
-
-    // Display customer info
-    resultDiv.textContent = `Hello ${customer.name}, your loan is currently at stage: ${customer.status || "Application Submission"}`;
-
-    // Highlight the current stage in the list
-    let stageToHighlight = customer.status || "Application Submission";
-
-    // Handle "Pending for Approval" or empty status to map properly
-    if (stageToHighlight.toLowerCase().includes("pending")) {
-        stageToHighlight = "Loan Approval and Disbursement";
-    }
-
-    stagesList.forEach(li => {
-        if (li.dataset.stage.toLowerCase() === stageToHighlight.toLowerCase()) {
-            li.classList.add('highlight');
-        }
-    });
-});
+    div.innerHTML = `<strong>Stage ${index + 1}: ${stage.title}</strong><br><p>${stage.description}</p>`;
+    resultDiv.appendChild(div);
+  });
+}

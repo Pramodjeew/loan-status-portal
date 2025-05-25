@@ -1,32 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Loan Status Inquiry</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loan Status Inquiry</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Loan Status Inquiry Portal</h1>
-        <p>Enter your NIC number to check your loan processing stage.</p>
-
-        <input type="text" id="nicInput" placeholder="Enter NIC Number" />
-        <button id="searchBtn">Search</button>
-
-        <div id="result" class="result"></div>
-
-        <h2>Loan Processing Stages</h2>
-        <ol id="stagesList" class="stages-list">
-            <li data-stage="Application Submission">Stage 1: Application Submission (????????? ???????? ?????)</li>
-            <li data-stage="Documentation Verification">Stage 2: Documentation Verification (???? ?????????)</li>
-            <li data-stage="Credit Evaluation">Stage 3: Credit Evaluation (?? ?????)</li>
-            <li data-stage="Loan Underwriting">Stage 4: Loan Underwriting (???? ???????? ?????)</li>
-            <li data-stage="Loan Approval and Disbursement">Stage 5: Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)</li>
-            <li data-stage="Loan Servicing">Stage 6: Loan Servicing (?? ???? ??????)</li>
-        </ol>
+  <header>Loan Status Inquiry Portal</header>
+  <div class="container">
+    <div>
+      <input type="text" id="nicInput" placeholder="Enter your NIC number" />
+      <button onclick="checkStatus()">Check Status</button>
     </div>
-
-    <script src="script.js"></script>
+    <div id="result" class="stage"></div>
+  </div>
+  <footer>BOC Monaragala Branch</footer>
+  <script src="script.js"></script>
 </body>
 </html>
