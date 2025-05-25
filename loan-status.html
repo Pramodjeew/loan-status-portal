@@ -1,175 +1,318 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Loan Status Inquiry</title>
+<title>Loan Status Tracker - Bank</title>
 <style>
+  /* Reset & base */
   body {
-      font-family: Arial, sans-serif;
-      background: #f4f7f8;
-      color: #333;
-      margin: 0;
-      padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f7fa;
+    margin: 0; padding: 0;
+    color: #333;
   }
+
   .container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px 30px;
-      background: white;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      text-align: center;
+    max-width: 720px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px 40px 50px 40px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-radius: 8px;
   }
+
   h1 {
-      color: #2a73cc;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #004481;
   }
+
+  p.subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 30px;
+    font-size: 1rem;
+  }
+
+  form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
   input[type="text"] {
-      width: 80%;
-      padding: 10px;
-      font-size: 1rem;
-      border: 2px solid #ddd;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      transition: border-color 0.3s ease;
+    flex-grow: 1;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
   }
   input[type="text"]:focus {
-      border-color: #2a73cc;
-      outline: none;
+    border-color: #007acc;
+    outline: none;
   }
+
   button {
-      background-color: #2a73cc;
-      color: white;
-      border: none;
-      padding: 10px 25px;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    padding: 12px 24px;
+    font-size: 1rem;
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
   }
   button:hover {
-      background-color: #1f5699;
+    background: #005f99;
   }
-  .result {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      min-height: 40px;
-      color: #444;
+
+  /* Result display */
+  #result {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    min-height: 40px;
+    color: #222;
   }
-  .stages-list {
-      text-align: left;
-      margin-top: 30px;
-      padding-left: 0;
-      list-style-position: inside;
+
+  /* Steps container */
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 10px;
   }
-  .stages-list li {
-      padding: 8px 15px;
-      margin: 8px 0;
-      border-left: 4px solid transparent;
-      border-radius: 4px;
-      font-weight: 500;
-      background: #f9f9f9;
+
+  .step {
+    flex: 1;
+    position: relative;
+    text-align: center;
+    color: #aaa;
+    font-weight: 600;
+    cursor: default;
+    user-select: none;
   }
-  .stages-list li.highlight {
-      border-left-color: #2a73cc;
-      background-color: #d9e6ff;
-      font-weight: 700;
+
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: -50%;
+    width: 100%;
+    height: 3px;
+    background: #ddd;
+    z-index: 1;
+  }
+
+  .step.active {
+    color: #007acc;
+  }
+  .step.active::before {
+    content: '?';
+    display: block;
+    margin: 0 auto 6px auto;
+    background: #007acc;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    line-height: 26px;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    z-index: 2;
+  }
+
+  .step.current {
+    color: #004481;
+    font-weight: 700;
+  }
+  .step.current::before {
+    content: attr(data-step-number);
+    display: block;
+    margin: 0 auto 6px auto;
+    background: #004481;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    line-height: 26px;
+    font-size: 16px;
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .steps {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    .step:not(:last-child)::after {
+      display: none;
+    }
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Loan Status Inquiry Portal</h1>
-  <p>Enter your NIC number to check your loan processing stage.</p>
+  <div class="container">
+    <h1>Loan Status Tracker</h1>
+    <p class="subtitle">Enter your NIC number to check your loan processing stage / ???? NIC ???? ?????? ?? ???? ?? ??????? ????? ?????</p>
+    <form id="loanForm" onsubmit="return false;">
+      <input type="text" id="nicInput" placeholder="Enter NIC number (e.g. 905521888V)" autocomplete="off" required />
+      <button type="submit" id="searchBtn">Search</button>
+    </form>
 
-  <input type="text" id="nicInput" placeholder="Enter NIC Number" />
-  <button id="searchBtn">Search</button>
+    <div id="result"></div>
 
-  <div id="result" class="result"></div>
-
-  <h2>Loan Processing Stages</h2>
-  <ol id="stagesList" class="stages-list">
-      <li data-stage="Application Submission">Stage 1: Application Submission (අයදුම්පත් ඉදිරිපත් කිරීම)</li>
-      <li data-stage="Documentation Verification">Stage 2: Documentation Verification (ලේඛන සත්‍යාපනය)</li>
-      <li data-stage="Credit Evaluation">Stage 3: Credit Evaluation (ණය ඇගයීම)</li>
-      <li data-stage="Loan Underwriting">Stage 4: Loan Underwriting (ඇපකර ඉදිරිපත් කිරීම)</li>
-      <li data-stage="Loan Approval and Disbursement">Stage 5: Loan Approval and Disbursement (ණය අනුමත කිරීම සහ ලබා දීම)</li>
-      <li data-stage="Loan Servicing">Stage 6: Loan Servicing (ණය සේවා සැපයීම)</li>
-  </ol>
-</div>
+    <div class="steps" id="stagesDisplay" aria-label="Loan processing stages">
+      <!-- Steps dynamically generated here -->
+    </div>
+  </div>
 
 <script>
-const customerData = [
-  { nic: "905521888V", name: "W.M. Isuru Shashi", status: "Documentation Verification" },
-  { nic: "876872013v", name: "w.m dinusha pushpa", status: "Credit Evaluation" },
-  { nic: "986032991V", name: "H.A.Y.H.hettiarachchi", status: "Documentation Verification" },
-  { nic: "198070003593", name: "T.A.chamila nishanthi", status: "Credit Evaluation" },
-  { nic: "821681154V", name: "w.M.Aminda jayalath", status: "Documentation Verification" },
-  { nic: "72661847V", name: "W.M.R.Vijesinhe", status: "Credit Evaluation" },
-  { nic: "905860283V", name: "W.V.T.R.Viyelath", status: "Loan Underwriting" },
-  { nic: "852392185V", name: "K.M.R.Gunasekara", status: "Loan Approval and Disbursement" },
-  { nic: "907150151V", name: "A.G.Kamalavathi kumarihami", status: "Credit Evaluation" },
-  { nic: "726661847V", name: "W.M.R.Wiyesinhe", status: "Loan Approval and Disbursement" },
-  { nic: "198968400622", name: "R.M.Sunethra sanjivani", status: "Pending for Approval" },
-  { nic: "926421875V", name: "Nilmini dissanayaka", status: "" },
-  { nic: "853292494V", name: "N.R.M.S.K.Rathnayaka", status: "Credit Evaluation" },
-  { nic: "878300319V", name: "J.M.A.I.Jayasinhe", status: "Credit Evaluation" },
-  { nic: "752342199V", name: "D.M.G.Kumarasiri", status: "Loan Approval and Disbursement" },
-  { nic: "856428561V", name: "kondaya", status: "Credit Evaluation" },
-  { nic: "977741971V", name: "R.G.C.S.Karunarathna", status: "Pending for Approval" },
-  { nic: "197977102213", name: "R.G.Shiromi mala", status: "Documentation Verification" },
-  { nic: "196923701917", name: "H.G.N.S.K.Gamage", status: "Credit Evaluation" },
-  { nic: "997280458V", name: "K.A.Purnima sewwandi", status: "Credit Evaluation" },
-  { nic: "972111821V", name: "J.Agilan prasanna", status: "Credit Evaluation" },
-  { nic: "89287236", name: "A.M.Chamith eranga", status: "Loan Approval and Disbursement" },
-  { nic: "196821102484", name: "S.R.Rajamuni", status: "Documentation Verification" },
-  { nic: "740550039V", name: "N.M.Athula senerath", status: "Credit Evaluation" },
-  { nic: "675881022V", name: "D.M.C.Dissanayake", status: "Loan Approval and Disbursement" },
-  { nic: "766350968V", name: "T.G.R.M.Priyanka", status: "Documentation Verification" },
-  { nic: "867463500V", name: "R.M.Nishanthi hemamali", status: "Credit Evaluation" },
-  { nic: "950790709V", name: "A.H.M.Isuru udaraka", status: "Credit Evaluation" },
-  { nic: "757734524V", name: "K.G.Suwaneetha kumari", status: "Loan Approval and Disbursement" },
-  { nic: "199002104294", name: "K.W.Sahan tharidu", status: "Credit Evaluation" },
-  { nic: "961441242V", name: "E.G.C.Jayamal", status: "Credit Evaluation" },
-  { nic: "198525305075", name: "w.priyankara dinesh", status: "Documentation Verification" },
-  { nic: "198675402868", name: "E.D.Damayanthi", status: "Credit Evaluation" },
-  { nic: "880065025V", name: "M.R.N.M.Bandare", status: "Loan Approval and Disbursement" }
-];
+  // Loan stages (English & Sinhala)
+  const stages = [
+    { en: "Application Submission", si: "????????? ???????? ?????" },
+    { en: "Documentation Verification", si: "???? ?????????" },
+    { en: "Credit Evaluation", si: "?? ?????" },
+    { en: "Loan Underwriting", si: "???? ???????? ?????" },
+    { en: "Loan Approval and Disbursement", si: "?? ????? ????? ?? ??? ???" },
+    { en: "Loan Servicing", si: "?? ???? ??????" }
+  ];
 
-document.getElementById('searchBtn').addEventListener('click', () => {
-  const nic = document.getElementById('nicInput').value.trim();
-  const resultDiv = document.getElementById('result');
-  const stagesList = document.querySelectorAll('#stagesList li');
+  // Customer data - trimmed and normalized NIC as key for lookup
+  const customers = {
+    "905521888v": { loanType: "Personal", name: "W.M. Isuru Shashi", status: "Documentation verification - ???? ?????????" },
+    "876872013v": { loanType: "Personal", name: "W.M Dinusha Pushpa", status: "Credit evaluation (?? ?????)" },
+    "986032991v": { loanType: "Personal", name: "H.A.Y.H.hettiarachchi", status: "Documentation verification - ???? ?????????" },
+    "198070003593": { loanType: "Personal", name: "T.A.chamila nishanthi", status: "Credit evaluation (?? ?????)" },
+    "821681154v": { loanType: "Personal", name: "W.M.Aminda Jayalath", status: "Documentation verification - ???? ?????????" },
+    "72661847v": { loanType: "Personal", name: "W.M.R.Vijesinhe", status: "Credit evaluation (?? ?????)" },
+    "905860283v": { loanType: "Personal", name: "W.V.T.R.Viyelath", status: "Loan underwriting (???? ???????? ?????)" },
+    "852392185v": { loanType: "Personal", name: "K.M.R.Gunasekara", status: "Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)" },
+    "907150151v": { loanType: "Personal", name: "A.G.Kamalavathi Kumarihami", status: "Credit evaluation (?? ?????)" },
+    "726661847v": { loanType: "Personal", name: "W.M.R.Wiyesinhe", status: "Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)" },
+    "198968400622": { loanType: "Personal", name: "R.M.Sunethra Sanjivani", status: "Pending for Approval" },
 
-  stagesList.forEach(li => li.classList.remove('highlight'));
+    "926421875v": { loanType: "Term", name: "Nilmini Dissanayaka", status: "" },
+    "853292494v": { loanType: "Term", name: "N.R.M.S.K.Rathnayaka", status: "Credit evaluation (?? ?????)" },
+    "878300319v": { loanType: "Term", name: "J.M.A.I.Jayasinhe", status: "Credit evaluation (?? ?????)" },
+    "752342199v": { loanType: "Term", name: "D.M.G.Kumarasiri", status: "Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)" },
+    "856428561v": { loanType: "Term", name: "Kondaya", status: "Credit evaluation (?? ?????)" },
+    "977741971v": { loanType: "Term", name: "R.G.C.S.Karunarathna", status: "Pending for Approval" },
+    "197977102213": { loanType: "Term", name: "R.G.Shiromi Mala", status: "Documentation verification - ???? ?????????" },
+    "196923701917": { loanType: "Term", name: "H.G.N.S.K.Gamage", status: "Credit evaluation (?? ?????)" },
+    "997280458v": { loanType: "Term", name: "K.A.Purnima Sewwandi", status: "Credit evaluation (?? ?????)" },
+    "972111821v": { loanType: "Term", name: "J.Agilan Prasanna", status: "Credit evaluation (?? ?????)" },
+    "89287236": { loanType: "Term", name: "A.M.Chamith Eranga", status: "Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)" },
+    "196821102484": { loanType: "Term", name: "S.R.Rajamuni", status: "Documentation verification - ???? ?????????" },
+    "740550039v": { loanType: "Term", name: "N.M.Athula Senerath", status: "Credit evaluation (?? ?????)" },
+    "675881022v": { loanType: "Term", name: "D.M.C.Dissanayake", status: "Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)" },
+    "766350968v": { loanType: "Term", name: "T.G.R.M.Priyanka", status: "Documentation verification - ???? ?????????" },
+    "867463500v": { loanType: "Term", name: "R.M.Nishanthi Hemamali", status: "Credit evaluation (?? ?????)" },
+    "950790709v": { loanType: "Term", name: "A.H.M.Isuru Udaraka", status: "Credit evaluation (?? ?????)" },
+    "757734524v": { loanType: "Term", name: "K.G.Suwaneetha Kumari", status: "Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)" },
+    "199002104294": { loanType: "Term", name: "K.W.Sahan Tharidu", status: "Credit evaluation (?? ?????)" },
+    "961441242v": { loanType: "Term", name: "E.G.C.Jayamal", status: "Credit evaluation (?? ?????)" },
+    "198525305075": { loanType: "Term", name: "W.Priyankara Dinesh", status: "Documentation verification - ???? ?????????" },
 
-  if (!nic) {
-    resultDiv.textContent = "Please enter your NIC number.";
-    return;
+    "198675402868": { loanType: "Pension", name: "E.D.Damayanthi", status: "Credit evaluation (?? ?????)" },
+
+    "880065025v": { loanType: "Leasing", name: "M.R.N.M.Bandare", status: "Loan Approval and Disbursement (?? ????? ????? ?? ??? ???)" }
+  };
+
+  // Map statuses to stage index (0-based)
+  // Matching English or Sinhala part to stages array
+  // We do fuzzy matching on stage keywords
+
+  function getStageIndexFromStatus(status) {
+    if (!status) return -1;
+    const st = status.toLowerCase();
+
+    if (st.includes("application submission") || st.includes("????????? ???????? ?????")) return 0;
+    if (st.includes("documentation verification") || st.includes("???? ?????????")) return 1;
+    if (st.includes("credit evaluation") || st.includes("?? ?????")) return 2;
+    if (st.includes("loan underwriting") || st.includes("???? ???????? ?????")) return 3;
+    if (st.includes("loan approval") || st.includes("?? ????? ?????")) return 4;
+    if (st.includes("loan servicing") || st.includes("?? ???? ??????")) return 5;
+    if (st.includes("pending for approval")) return 4; // treat as approval stage pending
+
+    return -1; // unknown or no status
   }
 
-  const customer = customerData.find(c => c.nic.toLowerCase() === nic.toLowerCase());
+  // Render stages with highlight
+  function renderStages(currentIndex) {
+    const container = document.getElementById('stagesDisplay');
+    container.innerHTML = '';
 
-  if (!customer) {
-    resultDiv.textContent = "NIC number not found. Please check and try again.";
-    return;
+    stages.forEach((stage, idx) => {
+      const step = document.createElement('div');
+      step.className = 'step';
+      step.setAttribute('data-step-number', idx + 1);
+      step.title = `${stage.en} - ${stage.si}`;
+      step.innerHTML = `<div>${stage.en}<br/><small>${stage.si}</small></div>`;
+
+      if (idx < currentIndex) {
+        step.classList.add('active'); // completed steps
+      } else if (idx === currentIndex) {
+        step.classList.add('current'); // current stage
+      }
+
+      container.appendChild(step);
+    });
   }
 
-  let stage = customer.status || "Application Submission";
-
-  if (stage.toLowerCase().includes("pending")) {
-    stage = "Loan Approval and Disbursement";
+  // Normalize NIC input
+  function normalizeNIC(nic) {
+    return nic.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
   }
 
-  resultDiv.textContent = `Hello ${customer.name}, your loan is currently at stage: ${stage}`;
+  // Main search function
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    const nicInput = document.getElementById('nicInput').value;
+    const nic = normalizeNIC(nicInput);
 
-  stagesList.forEach(li => {
-    if (li.dataset.stage.toLowerCase() === stage.toLowerCase()) {
-      li.classList.add('highlight');
+    const resultDiv = document.getElementById('result');
+    const stagesDiv = document.getElementById('stagesDisplay');
+
+    if (!nic) {
+      resultDiv.textContent = 'Please enter a valid NIC number. ??????? ????? NIC ?????? ?????? ?????.';
+      stagesDiv.innerHTML = '';
+      return;
+    }
+
+    const customer = customers[nic];
+
+    if (!customer) {
+      resultDiv.textContent = 'No records found for this NIC number. ??? NIC ????? ?????? ?????.';
+      stagesDiv.innerHTML = '';
+      return;
+    }
+
+    // Show customer and loan info
+    let statusText = customer.status ? customer.status : "No status available";
+    resultDiv.innerHTML = `
+      <strong>Customer Name:</strong> ${customer.name}<br/>
+      <strong>Loan Type:</strong> ${customer.loanType}<br/>
+      <strong>Current Status:</strong> ${statusText}
+    `;
+
+    // Determine current stage index
+    const stageIndex = getStageIndexFromStatus(statusText);
+
+    if(stageIndex === -1){
+      // If status unknown, just show all steps gray
+      stagesDiv.innerHTML = '<em>Status is not recognized to display stages.</em>';
+    } else {
+      renderStages(stageIndex);
     }
   });
-});
 </script>
 </body>
 </html>
